@@ -1,0 +1,28 @@
+name: Create PR test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  create-pr:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Update file
+        run: |
+          date >> updates.txt
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB }}
+          branch: auto-pr
+          branch-suffix: timestamp
+          delete-branch: true
