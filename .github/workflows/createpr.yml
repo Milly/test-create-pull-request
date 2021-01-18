@@ -19,31 +19,12 @@ jobs:
         run: |
           date >> updates.txt
 
-      - name: Check updated
-        id: check-updated
-        run: |
-          git diff
-          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-          echo "foo"
-          echo "::set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-          echo "bar"
+      - run: |
+          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')" || exit 0
         continue-on-error: true
 
       - run: |
-          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-        continue-on-error: true
-
-      - run: |
+          $?
           echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
           $?
-        continue-on-error: true
-
-      - run: |
-          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-          exit 0
-        continue-on-error: true
-
-      - run: |
-          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-          exit $true
         continue-on-error: true
