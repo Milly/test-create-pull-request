@@ -9,6 +9,8 @@ jobs:
 
   create-pr:
 
+    continue-on-error: true
+
     runs-on: windows-latest
 
     steps:
@@ -23,6 +25,25 @@ jobs:
         id: check-updated
         run: |
           git diff
-          echo "stat=$(git diff --quiet && echo 'clean' || echo 'dirty')"
+          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
+          echo "foo"
           echo "::set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-        continue-on-error: true
+          echo "bar"
+
+      - run: |
+          echo "foo"
+
+      - run: |
+          echo "foo"
+          true
+
+      - run: |
+          echo "foo"
+          $true
+
+      - run: |
+          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
+          echo "foo"
+          echo "::set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
+          echo "bar"
+          $true
