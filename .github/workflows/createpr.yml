@@ -15,16 +15,14 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - run: git branch
+
+      - run: git branch -a
+
       - name: Update file
         run: |
           date >> updates.txt
 
       - run: |
           echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')" || exit 0
-        continue-on-error: true
-
-      - run: |
-          $?
-          echo "set-output name=stat::$(git diff --quiet && echo 'clean' || echo 'dirty')"
-          $?
-        continue-on-error: true
+          exit 0
